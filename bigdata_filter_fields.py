@@ -9,7 +9,7 @@ from pymongo import MongoClient
 
 DB = 'bigdata1hour'
 COLLECTION = 'bigdata_player_session'
-OUT_FILE_PATH = '/home/lucmir/Desktop/projetoMestrado/bigdata1week/results/' + 'bigdata_fields.data'
+OUT_FILE_PATH = '../results/' + 'bigdata_fields.data'
 
 # connect
 connection = MongoClient()
