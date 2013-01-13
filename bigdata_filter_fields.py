@@ -7,7 +7,11 @@ import pymongo
 from pymongo import MongoClient
 
 
-DB = 'bigdata1hour'
+#DB = 'bigdata1hour'
+#COLLECTION = 'bigdata_player_session'
+#OUT_FILE_PATH = '../results/' + 'bigdata_fields.data'
+
+DB = 'bigdata'
 COLLECTION = 'bigdata_player_session'
 OUT_FILE_PATH = '../results/' + 'bigdata_fields.data'
 
