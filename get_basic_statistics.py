@@ -1,7 +1,10 @@
 """
 	Get basic statistics from file with bigdata fields:
 		- total number of sections.
-		- number of sections by day.
+		- sections by day
+		- sections by users
+		- sections by videos
+		- sections by genre
 """
 
 import datetime
@@ -14,13 +17,14 @@ sections_count = 0
 sections_by_day = {}
 sections_by_users = {}
 sections_by_videos = {}
+sections_by_genre = {}
 
 
 input_file = open(DATA_FILE, 'r')
 
 for line in input_file:
 
-	(user_id, video_id, creation_time, last_update_time) = line.split()
+	(user_id, video_id, creation_time, last_update_time, genre) = line.split()
 
 	# sections by day
 	timestamp = float(creation_time) / 1000.0
@@ -44,6 +48,12 @@ for line in input_file:
 	else:
 		sections_by_videos[video_id] += 1
 
+	# sections by genre
+	if genre not in sections_by_genre:
+		sections_by_genre[genre] = 1
+	else:
+		sections_by_genre[genre] += 1
+
 	# total sections
 	sections_count += 1
 
@@ -54,6 +64,9 @@ print "Total Sections:\n%s\n" % str(sections_count)
 
 print "Number of days:\n",len(sections_by_day)
 print "Sections by day:\n",sections_by_day,"\n"
+
+print "Number of genres:\n",len(sections_by_genre)
+print "Sections by genre:\n",sections_by_genre,"\n"
 
 print "Number of unique users:\n",len(sections_by_users),"\n"
 #print "Sections by users:\n",sections_by_users,"\n"
