@@ -25,7 +25,8 @@ for line in input_file:
 	# sections by day
 	timestamp = float(creation_time) / 1000.0
 	dt_obj = datetime.datetime.utcfromtimestamp(timestamp)
-	key = "%s/%s/%s" % (dt_obj.day,dt_obj.month,dt_obj.year)
+	dt_obj_local_time = dt_obj - datetime.timedelta(hours=3)
+	key = "%s/%s/%s" % (dt_obj_local_time.day, dt_obj_local_time.month, dt_obj_local_time.year)
 	if key not in sections_by_day:
 		sections_by_day[key] = 1
 	else:
