@@ -23,7 +23,7 @@ input_file = open(DATA_FILE, 'r')
 
 for line in input_file:
 
-	(user_id, video_id, creation_time, last_update_time) = line.split()
+	(user_id, video_id, creation_time, last_update_time, genre) = line.split()
 
 	if video_id not in videos_map:
 		videos_map[video_id] = True
@@ -34,7 +34,10 @@ input_file.close()
 # retrieve information for each video
 video_id_list = ','.join([ '\'' + str(i) + '\'' for i in videos_map.keys()])
 
-query = 'SELECT * FROM MEDIA WHERE ID IN (' + video_id_list + ')'
+query = 'SELECT ' \
++ ' CLIENT_ID, ' \
++ ' PUBLISH_START ' \
++ ' FROM MEDIA WHERE ID IN (' + video_id_list + ')'
 
 out_file = file(OUT_FILE, 'w')
 
@@ -46,7 +49,8 @@ with con:
 
     rows = cur.fetchall()
     for row in rows:
-    	out_file.write(str(row[9]) + '\n')
+    	line = '\t'.join() + '\n'
+    	out_file.write(line)
 
 
 out_file.close()
