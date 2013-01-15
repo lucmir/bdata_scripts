@@ -35,6 +35,7 @@ input_file.close()
 video_id_list = ','.join([ '\'' + str(i) + '\'' for i in videos_map.keys()])
 
 query = 'SELECT ' \
++ ' ID, ' \
 + ' CLIENT_ID, ' \
 + ' PUBLISH_START ' \
 + ' FROM MEDIA WHERE ID IN (' + video_id_list + ')'
@@ -49,8 +50,12 @@ with con:
 
     rows = cur.fetchall()
     for row in rows:
-    	line = '\t'.join() + '\n'
+    	
+    	mid = str(row[0])
+    	cid = str(row[1])
+    	pdate = row[2].strftime("%s") if row[2] is not None else 'None'
+    	
+    	line = '%s\t%s\t%s\n' % (mid, cid, pdate)
     	out_file.write(line)
-
 
 out_file.close()
