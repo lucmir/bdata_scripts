@@ -125,7 +125,7 @@ def calc_sections_count():
             # creation_time - last_update_time
             last_update_timestamp = float(last_update_time) / 1000.0
             last_update_dt_obj = datetime.datetime.utcfromtimestamp(last_update_timestamp)
-            tdelta = last_update_time - dt_obj
+            tdelta = last_update_dt_obj - dt_obj
             tdelta_in_hours = tdelta.seconds / 60
             increment_section_count(sections_by_section_time, tdelta_in_hours)
 
