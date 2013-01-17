@@ -136,6 +136,8 @@ def calc_sections_count():
 
         # total sections
         sections_count += 1
+        if (sections_by_client % 10000) == 0:
+            LOGGER.info( 'Sections processed: %s' % str(sections_count) )
 
     input_file.close()
 
