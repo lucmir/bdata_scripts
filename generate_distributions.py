@@ -118,7 +118,7 @@ def calc_sections_count():
             publish_timestamp = float(publish_date)
             publish_date_dt_obj = datetime.datetime.utcfromtimestamp(publish_timestamp)
             tdelta = publish_date_dt_obj - dt_obj
-            tdelta_in_hours = tdelta.seconds / 60 / 60
+            tdelta_in_hours = tdelta.seconds / 60
             increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
 
             # sections_by_section_time (in minutes)
