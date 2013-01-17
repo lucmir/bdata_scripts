@@ -10,11 +10,35 @@
 """
 
 import datetime
-import MySQLdb as mdb
-
+import os
 
 SECTIONS_DATA_FILE = '../results/bigdata_fields.data'
 VIDEO_INFO_FILE = '../results/video_info.data'
+DISTRIBUTIONS_OUT_DIR = '../results/distributions/'
+
+
+def set_logger():
+    """
+    Configure logging in file.
+    """
+    import logging
+
+    script_file_name = os.path.basename(__file__)
+    logger_name = script_file_name.replace('.py', '')
+    log_file_name = logger_name + '.log'
+
+    logger = logging.getLogger(logger_name)
+    hdlr = logging.FileHandler(log_file_name)
+
+    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    hdlr.setFormatter(formatter)
+    logger.addHandler(hdlr)
+    logger.setLevel(logging.DEBUG)
+    
+    return logger
+
+# set logging
+LOGGER = set_logger()
 
 
 def read_video_info():
@@ -81,7 +105,6 @@ def calc_sections_count():
         # sections by genre
         increment_section_count(sections_by_genre, genre)
 
-        
         if video_id in video_info_map:
 
             client_id = video_info_map[video_id][0]
@@ -91,10 +114,18 @@ def calc_sections_count():
             increment_section_count(sections_by_client, client_id)
 
             # hours_after_publishing
-            #TODO timestamp - publish_date
+            # publish_date - creation_time
+            publish_date_dt_obj = datetime.datetime.utcfromtimestamp(publish_date)
+            tdelta = publish_date_dt_obj - dt_obj
+            tdelta_in_hours = tdelta.seconds / 60 / 60
+            increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
 
             # sections_by_section_time (in minutes)
-            #TODO creation_time - last_update_time
+            # creation_time - last_update_time
+            last_update_dt_obj = datetime.datetime.utcfromtimestamp(last_update_time)
+            tdelta = last_update_time - dt_obj
+            tdelta_in_hours = tdelta.seconds / 60
+            increment_section_count(sections_by_section_time, tdelta_in_hours)
 
         else:
             increment_section_count(sections_by_client, 'UNKNOW')
@@ -111,9 +142,72 @@ def calc_sections_count():
             sections_by_section_time
 
 
+def get_distribution_of_values(dict):
+    """
+    Get distribution from a dict (id->occurrences)
+    """
+    distribution = {}
+
+    values = sorted(dict.values())
+
+    for value in values:
+        if value in distribution:
+            distribution[value] += 1
+        else:
+            distribution[value] = 1
+    return distribution
+
+
+def write_distribution(dist, out_file):
+    """
+    Write distribution to a file
+    """
+    
+    keys = sorted(dist.keys())
+
+    file = open(out_file, "w")
+
+    for key in keys:
+        file.write(str(key) + '\t' + str(dist[key]) + '\n')
+    
+    file.close()
+
 
 if __name__ == "__main__":
+
+    LOGGER.info('Starting sections counting...')
     
     sections_count, sections_by_day, sections_by_users, sections_by_videos, \
         sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
         sections_by_section_time = calc_distributions()
+
+    LOGGER.info('Generating distributions...')
+
+    sections_by_users_dist = get_distribution_of_values(sections_by_users)
+    sections_by_videos_dist = get_distribution_of_values(sections_by_videos)
+
+    if not os.path.exists(DISTRIBUTIONS_OUT_DIR):
+        os.makedirs(DISTRIBUTIONS_OUT_DIR)
+
+    LOGGER.info('Writing distributions...')
+
+    LOGGER.info('sections_by_day...')
+    write_distribution(sections_by_day, DISTRIBUTIONS_OUT_DIR + 'sections_by_day.data')
+    
+    LOGGER.info('sections_by_users_dist...')
+    write_distribution(sections_by_users_dist, DISTRIBUTIONS_OUT_DIR + 'sections_by_users.data')
+    
+    LOGGER.info('sections_by_videos_dist...')
+    write_distribution(sections_by_videos_dist, DISTRIBUTIONS_OUT_DIR + 'sections_by_videos.data')
+    
+    LOGGER.info('sections_by_genre...')
+    write_distribution(sections_by_genre, DISTRIBUTIONS_OUT_DIR + 'sections_by_genre.data')
+    
+    LOGGER.info('sections_by_client...')
+    write_distribution(sections_by_client, DISTRIBUTIONS_OUT_DIR + 'sections_by_client.data')
+    
+    LOGGER.info('sections_by_hours_after_publishing...')
+    write_distribution(sections_by_hours_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_hours_after_publishing.data')
+
+    LOGGER.info('sections_by_section_time...')
+    write_distribution(sections_by_section_time, DISTRIBUTIONS_OUT_DIR + 'sections_by_section_time.data')
