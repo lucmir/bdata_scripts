@@ -13,7 +13,7 @@ import datetime
 import os
 
 SECTIONS_DATA_FILE = '../results/bigdata_fields.data'
-VIDEO_INFO_FILE = '../results/video_info.data'
+VIDEO_INFO_FILE = '../results/videos_info.data'
 DISTRIBUTIONS_OUT_DIR = '../results/distributions/'
 
 
