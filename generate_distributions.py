@@ -179,7 +179,7 @@ if __name__ == "__main__":
     
     sections_count, sections_by_day, sections_by_users, sections_by_videos, \
         sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
-        sections_by_section_time = calc_distributions()
+        sections_by_section_time = calc_sections_count()
 
     LOGGER.info('Generating distributions...')
 
