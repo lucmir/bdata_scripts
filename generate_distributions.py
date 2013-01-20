@@ -78,6 +78,7 @@ def calc_sections_count():
     sections_by_genre = {}
     sections_by_client = {}
     sections_by_hours_after_publishing = {}
+    sections_by_days_after_publishing = {}
     sections_by_section_time = {}
 
     # read video info
@@ -120,14 +121,17 @@ def calc_sections_count():
             tdelta = dt_obj - publish_date_dt_obj
             tdelta_in_hours = round(tdelta.total_seconds() / 3600.0)
             increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
+            # days after publishing
+            tdelta_in_days = round(tdelta.total_seconds() / 60.0)
+            increment_section_count(sections_by_days_after_publishing, tdelta_in_days)
 
             # sections_by_section_time (in minutes)
             # creation_time - last_update_time
             last_update_timestamp = float(last_update_time) / 1000.0
             last_update_dt_obj = datetime.datetime.utcfromtimestamp(last_update_timestamp)
             tdelta = last_update_dt_obj - dt_obj
-            tdelta_in_hours = round(tdelta.total_seconds() / 60.0)
-            increment_section_count(sections_by_section_time, tdelta_in_hours)
+            tdelta_in_minutes = round(tdelta.total_seconds() / 60.0)
+            increment_section_count(sections_by_section_time, tdelta_in_minutes)
 
         else:
             increment_section_count(sections_by_client, 'UNKNOW')
@@ -143,7 +147,7 @@ def calc_sections_count():
 
     return  sections_count, sections_by_day, sections_by_users, sections_by_videos, \
             sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
-            sections_by_section_time
+            sections_by_days_after_publishing, sections_by_section_time
 
 
 def get_distribution_of_values(dict):
@@ -183,7 +187,7 @@ if __name__ == "__main__":
     
     sections_count, sections_by_day, sections_by_users, sections_by_videos, \
         sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
-        sections_by_section_time = calc_sections_count()
+        sections_by_days_after_publishing, sections_by_section_time = calc_sections_count()
 
     LOGGER.info('Generating distributions...')
 
@@ -215,3 +219,6 @@ if __name__ == "__main__":
 
     LOGGER.info('sections_by_section_time...')
     write_distribution(sections_by_section_time, DISTRIBUTIONS_OUT_DIR + 'sections_by_section_time.data')
+
+    LOGGER.info('sections_by_days_after_publishing...')
+    write_distribution(sections_by_days_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_days_after_publishing.data')
