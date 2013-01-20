@@ -122,7 +122,7 @@ def calc_sections_count():
             tdelta_in_hours = round(tdelta.total_seconds() / 3600.0)
             increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
             # days after publishing
-            tdelta_in_days = round(tdelta.total_seconds() / 60.0)
+            tdelta_in_days = round(tdelta.total_seconds() / 86400.0 )
             increment_section_count(sections_by_days_after_publishing, tdelta_in_days)
 
             # sections_by_section_time (in minutes)
