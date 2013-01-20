@@ -120,6 +120,7 @@ def calc_sections_count():
             tdelta = publish_date_dt_obj - dt_obj
             tdelta_in_hours = tdelta.days
             increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
+            print publish_date, creation_time
 
             # sections_by_section_time (in minutes)
             # creation_time - last_update_time
