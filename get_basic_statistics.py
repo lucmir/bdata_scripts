@@ -18,6 +18,7 @@ sections_by_day = {}
 sections_by_users = {}
 sections_by_videos = {}
 sections_by_genre = {}
+sections_by_day_genre = {}
 
 
 input_file = open(DATA_FILE, 'r')
@@ -30,11 +31,11 @@ for line in input_file:
 	timestamp = float(creation_time) / 1000.0
 	dt_obj = datetime.datetime.utcfromtimestamp(timestamp)
 	dt_obj_local_time = dt_obj - datetime.timedelta(hours=3)
-	key = "%s/%s/%s" % (dt_obj_local_time.day, dt_obj_local_time.month, dt_obj_local_time.year)
-	if key not in sections_by_day:
-		sections_by_day[key] = 1
+	date_key = "%s/%s/%s" % (dt_obj_local_time.day, dt_obj_local_time.month, dt_obj_local_time.year)
+	if date_key not in sections_by_day:
+		sections_by_day[date_key] = 1
 	else:
-		sections_by_day[key] += 1
+		sections_by_day[date_key] += 1
 
 	# sections by user
 	if user_id not in sections_by_users:
@@ -54,6 +55,14 @@ for line in input_file:
 	else:
 		sections_by_genre[genre] += 1
 
+	# sections by day and genre
+	if genre not in sections_by_day_genre:
+		sections_by_day_genre[genre] = {}
+	if date_key not in sections_by_day_genre[genre]:
+		sections_by_day_genre[genre][date_key] = 1
+	else:
+		sections_by_day_genre[genre][date_key] += 1
+
 	# total sections
 	sections_count += 1
 
@@ -71,5 +80,7 @@ print "Sections by genre:\n",sections_by_genre,"\n"
 print "Number of unique users:\n",len(sections_by_users),"\n"
 #print "Sections by users:\n",sections_by_users,"\n"
 
-print "Number of unique videos:\n",len(sections_by_videos)
+print "Number of unique videos:\n",len(sections_by_videos), "\n"
 #print "Sections by users:\n",sections_by_users,"\n"
+
+print "Sections by genre and day:\n",sections_by_day_genre,"\n"
