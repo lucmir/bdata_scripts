@@ -15,6 +15,20 @@ import os
 SECTIONS_DATA_FILE = '../results/bigdata_fields.data'
 VIDEO_INFO_FILE = '../results/videos_info.data'
 DISTRIBUTIONS_OUT_DIR = '../results/distributions/'
+DISTRIBUTIONS_TO_GENERATE = [   \
+#                                'sections_by_day',
+#                                'sections_by_users_dist',
+#                                'sections_by_videos_dist',
+#                                'sections_by_genre',
+#                                'sections_by_client',
+#                                'sections_by_hours_after_publishing',
+#                                'sections_by_section_time',
+#                                'sections_by_days_after_publishing',
+                                'sections_by_genre_and_hours_after_publishing'
+                            ]
+
+DISTRIBUTIONS_OUT_DIR = '/tmp/distribs/'
+
 
 
 def set_logger():
@@ -80,6 +94,7 @@ def calc_sections_count():
     sections_by_hours_after_publishing = {}
     sections_by_days_after_publishing = {}
     sections_by_section_time = {}
+    sections_by_genre_and_hours_after_publishing = {}
 
     # read video info
     video_info_map = read_video_info()
@@ -133,6 +148,11 @@ def calc_sections_count():
             tdelta_in_minutes = round(tdelta.total_seconds() / 60.0)
             increment_section_count(sections_by_section_time, tdelta_in_minutes)
 
+            # sections by genre and hours after publishing
+            if genre not in sections_by_genre_and_hours_after_publishing:
+                sections_by_genre_and_hours_after_publishing[genre] = {}
+            increment_section_count(sections_by_genre_and_hours_after_publishing[genre], tdelta_in_hours)
+
         else:
             increment_section_count(sections_by_client, 'UNKNOW')
             increment_section_count(sections_by_hours_after_publishing, 'UNKNOW')
@@ -147,7 +167,8 @@ def calc_sections_count():
 
     return  sections_count, sections_by_day, sections_by_users, sections_by_videos, \
             sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
-            sections_by_days_after_publishing, sections_by_section_time
+            sections_by_days_after_publishing, sections_by_section_time, \
+            sections_by_genre_and_hours_after_publishing
 
 
 def get_distribution_of_values(dict):
@@ -187,7 +208,8 @@ if __name__ == "__main__":
     
     sections_count, sections_by_day, sections_by_users, sections_by_videos, \
         sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
-        sections_by_days_after_publishing, sections_by_section_time = calc_sections_count()
+        sections_by_days_after_publishing, sections_by_section_time, \
+        sections_by_genre_and_hours_after_publishing = calc_sections_count()
 
     LOGGER.info('Generating distributions...')
 
@@ -199,26 +221,44 @@ if __name__ == "__main__":
 
     LOGGER.info('Writing distributions...')
 
-    LOGGER.info('sections_by_day...')
-    write_distribution(sections_by_day, DISTRIBUTIONS_OUT_DIR + 'sections_by_day.data')
+    if 'sections_by_day' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_day...')
+        write_distribution(sections_by_day, DISTRIBUTIONS_OUT_DIR + 'sections_by_day.data')
     
-    LOGGER.info('sections_by_users_dist...')
-    write_distribution(sections_by_users_dist, DISTRIBUTIONS_OUT_DIR + 'sections_by_users.data')
+    if 'sections_by_users_dist' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_users_dist...')
+        write_distribution(sections_by_users_dist, DISTRIBUTIONS_OUT_DIR + 'sections_by_users.data')
     
-    LOGGER.info('sections_by_videos_dist...')
-    write_distribution(sections_by_videos_dist, DISTRIBUTIONS_OUT_DIR + 'sections_by_videos.data')
+    if 'sections_by_videos_dist' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_videos_dist...')
+        write_distribution(sections_by_videos_dist, DISTRIBUTIONS_OUT_DIR + 'sections_by_videos.data')
     
-    LOGGER.info('sections_by_genre...')
-    write_distribution(sections_by_genre, DISTRIBUTIONS_OUT_DIR + 'sections_by_genre.data')
+    if 'sections_by_genre' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_genre...')
+        write_distribution(sections_by_genre, DISTRIBUTIONS_OUT_DIR + 'sections_by_genre.data')
     
-    LOGGER.info('sections_by_client...')
-    write_distribution(sections_by_client, DISTRIBUTIONS_OUT_DIR + 'sections_by_client.data')
+    if 'sections_by_client' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_client...')
+        write_distribution(sections_by_client, DISTRIBUTIONS_OUT_DIR + 'sections_by_client.data')
     
-    LOGGER.info('sections_by_hours_after_publishing...')
-    write_distribution(sections_by_hours_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_hours_after_publishing.data')
+    if 'sections_by_hours_after_publishing' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_hours_after_publishing...')
+        write_distribution(sections_by_hours_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_hours_after_publishing.data')
 
-    LOGGER.info('sections_by_section_time...')
-    write_distribution(sections_by_section_time, DISTRIBUTIONS_OUT_DIR + 'sections_by_section_time.data')
+    if 'sections_by_section_time' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_section_time...')
+        write_distribution(sections_by_section_time, DISTRIBUTIONS_OUT_DIR + 'sections_by_section_time.data')
 
-    LOGGER.info('sections_by_days_after_publishing...')
-    write_distribution(sections_by_days_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_days_after_publishing.data')
+    if 'sections_by_days_after_publishing' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_days_after_publishing...')
+        write_distribution(sections_by_days_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_days_after_publishing.data')
+
+    if 'sections_by_genre_and_hours_after_publishing' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_genre_and_hours_after_publishing...')
+        out_dir = DISTRIBUTIONS_OUT_DIR + 'sections_by_genre_and_hours_after_publishing/'
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+        for genre in sections_by_genre.keys():
+            if genre in sections_by_genre_and_hours_after_publishing:
+                write_distribution(sections_by_genre_and_hours_after_publishing[genre], out_dir + genre + '.data')
+
