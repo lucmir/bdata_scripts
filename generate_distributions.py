@@ -7,6 +7,8 @@
         - sections by client
         - sections by hours after publishing
         - sections by section time
+        - sections by genre and hours after publishing
+        - sections by genre and section time
 """
 
 import datetime
@@ -24,7 +26,8 @@ DISTRIBUTIONS_TO_GENERATE = [   \
 #                                'sections_by_hours_after_publishing',
 #                                'sections_by_section_time',
 #                                'sections_by_days_after_publishing',
-                                'sections_by_genre_and_hours_after_publishing'
+                                'sections_by_genre_and_hours_after_publishing',
+                                'sections_by_genre_and_section_time'
                             ]
 
 DISTRIBUTIONS_OUT_DIR = '/tmp/distribs/'
@@ -95,6 +98,7 @@ def calc_sections_count():
     sections_by_days_after_publishing = {}
     sections_by_section_time = {}
     sections_by_genre_and_hours_after_publishing = {}
+    sections_by_genre_and_section_time = {}
 
     # read video info
     video_info_map = read_video_info()
@@ -153,6 +157,11 @@ def calc_sections_count():
                 sections_by_genre_and_hours_after_publishing[genre] = {}
             increment_section_count(sections_by_genre_and_hours_after_publishing[genre], tdelta_in_hours)
 
+            # sections by genre and section time
+            if genre not in sections_by_genre_and_section_time:
+                sections_by_genre_and_section_time[genre] = {}
+            increment_section_count(sections_by_genre_and_section_time[genre], tdelta_in_minutes)
+
         else:
             increment_section_count(sections_by_client, 'UNKNOW')
             increment_section_count(sections_by_hours_after_publishing, 'UNKNOW')
@@ -168,7 +177,8 @@ def calc_sections_count():
     return  sections_count, sections_by_day, sections_by_users, sections_by_videos, \
             sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
             sections_by_days_after_publishing, sections_by_section_time, \
-            sections_by_genre_and_hours_after_publishing
+            sections_by_genre_and_hours_after_publishing, \
+            sections_by_genre_and_section_time
 
 
 def get_distribution_of_values(dict):
@@ -209,7 +219,8 @@ if __name__ == "__main__":
     sections_count, sections_by_day, sections_by_users, sections_by_videos, \
         sections_by_genre, sections_by_client, sections_by_hours_after_publishing, \
         sections_by_days_after_publishing, sections_by_section_time, \
-        sections_by_genre_and_hours_after_publishing = calc_sections_count()
+        sections_by_genre_and_hours_after_publishing, \
+        sections_by_genre_and_section_time = calc_sections_count()
 
     LOGGER.info('Generating distributions...')
 
@@ -261,4 +272,14 @@ if __name__ == "__main__":
         for genre in sections_by_genre.keys():
             if genre in sections_by_genre_and_hours_after_publishing:
                 write_distribution(sections_by_genre_and_hours_after_publishing[genre], out_dir + genre + '.data')
+
+    if 'sections_by_genre_and_section_time' in DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('sections_by_genre_and_section_time...')
+        out_dir = DISTRIBUTIONS_OUT_DIR + 'sections_by_genre_and_section_time/'
+        if not os.path.exists(out_dir):
+            os.makedirs(out_dir)
+        for genre in sections_by_genre.keys():
+            if genre in sections_by_genre_and_section_time:
+                write_distribution(sections_by_genre_and_section_time[genre], out_dir + genre + '.data')
+
 
