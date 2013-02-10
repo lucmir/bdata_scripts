@@ -5,15 +5,14 @@
 
 import pymongo
 from pymongo import MongoClient
-
-
-#DB = 'bigdata1hour'
-#COLLECTION = 'bigdata_player_session'
-#OUT_FILE_PATH = '../results/' + 'bigdata_fields.data'
+import sys
 
 DB = 'bigdata'
 COLLECTION = 'bigdata_player_session'
-OUT_FILE_PATH = '../results/' + 'bigdata_fields.data'
+FILTER_CREATION_TIME_START = sys.argv[0] #1344826800000
+FILTER_CREATION_TIME_END = sys.argv[1] #1345431600000
+OUT_FILE_PATH = sys.argv[2] #'../results/' + 'bigdata_fields.data'
+
 
 # connect
 connection = MongoClient()
@@ -28,7 +27,7 @@ fields = {  '_id' : False,
 			'user_id' : True,
 			'video_genre' : True }
 
-filters = {'creation_time' : {'$gte': 1344826800000, '$lt': 1345431600000}}
+filters = {'creation_time' : {'$gte': FILTER_CREATION_TIME_START, '$lt': FILTER_CREATION_TIME_END}}
 
 results = collection.find(filters, fields)
 
