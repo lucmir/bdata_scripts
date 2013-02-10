@@ -23,9 +23,16 @@ sections_by_day_genre = {}
 
 input_file = open(DATA_FILE, 'r')
 
+line_count = 0
 for line in input_file:
 
-	(user_id, video_id, creation_time, last_update_time, genre) = line.split()
+	line_count += 1 
+
+	try:
+		(user_id, video_id, creation_time, last_update_time, genre) = line.split()
+	except:
+		print 'Error parsing line: ' + str(line_count)
+		continue
 
 	# sections by day
 	timestamp = float(creation_time) / 1000.0
