@@ -9,9 +9,9 @@ import sys
 
 DB = 'bigdata'
 COLLECTION = 'bigdata_player_session'
-FILTER_CREATION_TIME_START = sys.argv[0] #1344826800000
-FILTER_CREATION_TIME_END = sys.argv[1] #1345431600000
-OUT_FILE_PATH = sys.argv[2] #'../results/' + 'bigdata_fields.data'
+FILTER_CREATION_TIME_START = sys.argv[1] #1344826800000
+FILTER_CREATION_TIME_END = sys.argv[2] #1345431600000
+OUT_FILE_PATH = sys.argv[3] #'../results/' + 'bigdata_fields.data'
 
 
 # connect

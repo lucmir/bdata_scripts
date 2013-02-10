@@ -15,9 +15,9 @@ import datetime
 import os
 import sys
 
-SECTIONS_DATA_FILE = sys.argv[0] #'../results/bigdata_fields.data'
-VIDEO_INFO_FILE = sys.argv[1] #'../results/videos_info.data'
-DISTRIBUTIONS_OUT_DIR = sys.argv[2] #'../results/distributions/'
+SECTIONS_DATA_FILE = sys.argv[1] #'../results/bigdata_fields.data'
+VIDEO_INFO_FILE = sys.argv[2] #'../results/videos_info.data'
+DISTRIBUTIONS_OUT_DIR = sys.argv[3] #'../results/distributions/'
 DISTRIBUTIONS_TO_GENERATE = [   \
                                 'sections_by_day',
                                 'sections_by_users_dist',

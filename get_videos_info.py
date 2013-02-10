@@ -8,8 +8,8 @@ import MySQLdb as mdb
 import sys
 
 
-DATA_FILE = sys.argv[0]  #'../results/bigdata_fields.data'
-OUT_FILE = sys.argv[1]  #'../results/videos_info.data'
+DATA_FILE = sys.argv[1]  #'../results/bigdata_fields.data'
+OUT_FILE = sys.argv[2]  #'../results/videos_info.data'
 
 DB_HOST = 'localhost'
 DB_USER = 'root'
