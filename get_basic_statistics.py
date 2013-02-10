@@ -8,9 +8,9 @@
 """
 
 import datetime
+import sys
 
-
-DATA_FILE = '../results/bigdata_fields.data'
+DATA_FILE = sys.argv[0] #'../results/bigdata_fields.data'
 
 
 sections_count = 0

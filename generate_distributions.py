@@ -13,25 +13,23 @@
 
 import datetime
 import os
+import sys
 
-SECTIONS_DATA_FILE = '../results/bigdata_fields.data'
-VIDEO_INFO_FILE = '../results/videos_info.data'
-DISTRIBUTIONS_OUT_DIR = '../results/distributions/'
+SECTIONS_DATA_FILE = sys.argv[0] #'../results/bigdata_fields.data'
+VIDEO_INFO_FILE = sys.argv[1] #'../results/videos_info.data'
+DISTRIBUTIONS_OUT_DIR = sys.argv[2] #'../results/distributions/'
 DISTRIBUTIONS_TO_GENERATE = [   \
-#                                'sections_by_day',
-#                                'sections_by_users_dist',
-#                                'sections_by_videos_dist',
-#                                'sections_by_genre',
-#                                'sections_by_client',
-#                                'sections_by_hours_after_publishing',
-#                                'sections_by_section_time',
-#                                'sections_by_days_after_publishing',
+                                'sections_by_day',
+                                'sections_by_users_dist',
+                                'sections_by_videos_dist',
+                                'sections_by_genre',
+                                'sections_by_client',
+                                'sections_by_hours_after_publishing',
+                                'sections_by_section_time',
+                                'sections_by_days_after_publishing',
                                 'sections_by_genre_and_hours_after_publishing',
                                 'sections_by_genre_and_section_time'
                             ]
-
-DISTRIBUTIONS_OUT_DIR = '/tmp/distribs/'
-
 
 
 def set_logger():
