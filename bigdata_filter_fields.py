@@ -26,7 +26,7 @@ fields = {  '_id' : False,
 			'last_update_time' : True,
 			'video_id' : True,
 			'user_id' : True,
-			'video_genre' : True.
+			'video_genre' : True,
 			'video_duration' : True }
 
 filters = {'creation_time' : {'$gte': int(FILTER_CREATION_TIME_START), '$lt': int(FILTER_CREATION_TIME_END)}}
