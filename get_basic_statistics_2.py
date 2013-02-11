@@ -27,8 +27,8 @@ line_count = 0
 for line in input_file:
 
 	line_count += 1 
-	if (line_count % 100000) == 0:
-		print "LINHAS PERCORRIDAS: ", str(line_count)
+	if (line_count % 1000000) == 0:
+		print "LINHAS PERCORRIDAS: ", str(line_count), " - ", str(100.0*(line_count/110626799.0)), "%"
 
 	try:
 		(user_id, video_id, creation_time, last_update_time, genre) = line.split()
