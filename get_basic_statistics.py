@@ -178,10 +178,10 @@ if video_duration_count > 0:
 		input_file.close()
 		video_duration_std = math.sqrt((1.0/(video_duration_count-1))*(video_duration_std/video_duration_count))
 		for genre in video_duration_by_genre.keys():
-			if video_duration_by_genre[genre]['count'] > 0:
+			video_duration_count = video_duration_by_genre[genre]['count']
+			if video_duration_count > 0:
 				video_duration_std = video_duration_by_genre[genre]['std']
-				video_duration_count = video_duration_by_genre[genre]['count']
-				video_duration_by_genre[genre]['std'] = math.sqrt((1.0/(video_duration_count-1))*(video_duration_std/video_duration_count))
+				video_duration_by_genre[genre]['std'] = math.sqrt((1.0/(video_duration_count))*(video_duration_std/video_duration_count))
 
 		output_file.write("Video duration std:\n%s\n" % str(video_duration_std))
 

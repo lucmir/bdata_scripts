@@ -184,7 +184,7 @@ def calc_sections_count():
             increment_section_count(sections_by_genre_and_day_hour[genre], dt_obj_local_time.hour)
 
             # retention
-            if video_duration is not None and video_duration is not 'None':
+            if video_duration is not None and video_duration != 'None':
                 retention = (tdelta.total_seconds() * 1000.0) / int(video_duration)
                 retention = retention if retention <= 1.0 else 1.0
                 retention = round(retention, 1)
