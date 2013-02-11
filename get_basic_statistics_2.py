@@ -27,6 +27,8 @@ line_count = 0
 for line in input_file:
 
 	line_count += 1 
+	if (line_count % 100000) == 0:
+		print "LINHAS PERCORRIDAS: ", str(line_count)
 
 	try:
 		(user_id, video_id, creation_time, last_update_time, genre) = line.split()
@@ -72,18 +74,23 @@ for line in input_file:
 input_file.close()
 
 
-print "Total Sections:\n%s\n" % str(sections_count)
+output_file = open(OUT_FILE, 'w')
 
-print "Number of days:\n",len(sections_by_day)
-print "Sections by day:\n",sections_by_day,"\n"
 
-print "Number of genres:\n",len(sections_by_genre)
-print "Sections by genre:\n",sections_by_genre,"\n"
+output_file.write("Total Sections:\n%s\n\n" % str(sections_count))
 
-print "Number of unique users:\n",len(sections_by_users),"\n"
+output_file.write("Number of days:%s\n\n" % str(len(sections_by_day)))
+output_file.write("Sections by day:%s\n\n" % str(sections_by_day))
+
+output_file.write("Number of genres:%s\n\n" % str(len(sections_by_genre)))
+output_file.write("Sections by genre:%s\n\n" % str(sections_by_genre))
+
+output_file.write("Number of unique users:%s\n\n" % str(len(sections_by_users)))
 #print "Sections by users:\n",sections_by_users,"\n"
 
-print "Number of unique videos:\n",len(sections_by_videos), "\n"
+output_file.write("Number of unique videos:%s\n\n" % str(len(sections_by_videos)))
 #print "Sections by users:\n",sections_by_users,"\n"
 
-print "Sections by genre and day:\n",sections_by_day_genre,"\n"
+output_file.write("Sections by genre and day:%s\n\n" % str(sections_by_day_genre))
+
+output_file.close()
