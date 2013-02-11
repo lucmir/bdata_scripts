@@ -11,7 +11,7 @@ import datetime
 import sys
 
 DATA_FILE = sys.argv[1] #'../results/bigdata_fields.data'
-
+OUT_FILE = sys.argv[2] #'../results/statistics.data'
 
 sections_count = 0
 sections_by_day = {}
