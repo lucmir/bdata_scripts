@@ -27,8 +27,8 @@ line_count = 0
 for line in input_file:
 
 	line_count += 1 
-	if (line_count % 1000000) == 0:
-		print "LINHAS PERCORRIDAS: ", str(line_count), " - ", str(100.0*(line_count/110626799.0)), "%"
+	if (line_count % 100000) == 0:
+		print "LINHAS PERCORRIDAS: ", str(line_count)
 
 	try:
 		(user_id, video_id, creation_time, last_update_time, genre) = line.split()
@@ -47,8 +47,6 @@ for line in input_file:
 		sections_by_day[date_key] += 1
 
 	# sections by user
-	user_id_items = user_id.split('-')
-	user_id = user_id_items[-1]
 	if user_id not in sections_by_users:
 		sections_by_users[user_id] = True
 

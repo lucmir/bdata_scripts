@@ -13,6 +13,7 @@ FILTER_CREATION_TIME_START = sys.argv[1] #1344826800000
 FILTER_CREATION_TIME_END = sys.argv[2] #1345431600000
 OUT_FILE_PATH = sys.argv[3] #'../results/' + 'bigdata_fields.data'
 
+print 'Executando com parametros: ', FILTER_CREATION_TIME_START, FILTER_CREATION_TIME_END, OUT_FILE_PATH
 
 # connect
 connection = MongoClient()
@@ -28,7 +29,7 @@ fields = {  '_id' : False,
 			'video_genre' : True.
 			'video_duration' : True }
 
-filters = {'creation_time' : {'$gte': FILTER_CREATION_TIME_START, '$lt': FILTER_CREATION_TIME_END}}
+filters = {'creation_time' : {'$gte': int(FILTER_CREATION_TIME_START), '$lt': int(FILTER_CREATION_TIME_END)}}
 
 results = collection.find(filters, fields)
 
