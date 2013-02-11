@@ -169,8 +169,8 @@ if video_duration_count > 0:
 				if video_duration is not None:
 					try:
 						d = int(video_duration)
-						video_duration_std += math.sqrt(d - video_duration_mean)**2)
-						video_duration_by_genre[genre]['std'] += math.sqrt(d - video_duration_by_genre[genre]['mean'])**2)
+						video_duration_std += math.sqrt((d - video_duration_mean)**2)
+						video_duration_by_genre[genre]['std'] += math.sqrt((d - video_duration_by_genre[genre]['mean'])**2)
 					except:
 						pass
 			except:
