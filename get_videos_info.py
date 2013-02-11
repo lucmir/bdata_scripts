@@ -24,7 +24,7 @@ input_file = open(DATA_FILE, 'r')
 
 for line in input_file:
 
-	(user_id, video_id, creation_time, last_update_time, genre) = line.split()
+	(user_id, video_id, creation_time, last_update_time, genre, video_duration) = line.split()
 
 	if video_id not in videos_map:
 		videos_map[video_id] = True
