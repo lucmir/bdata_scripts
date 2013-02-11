@@ -16,7 +16,7 @@ time python bigdata_filter_fields.py $DATE_RANGE_START $DATE_RANGE_END $BASE_DIR
 echo;
 
 echo 'Running get_basic_statistics...'
-time python get_basic_statistics_2.py $BASE_DIR/outputs/bigdata_fields.data $BASE_DIR/results/basic_statistics.data
+time python get_basic_statistics.py $BASE_DIR/outputs/bigdata_fields.data $BASE_DIR/results/basic_statistics.data
 echo;
 
 echo 'Running get_video_info...'
