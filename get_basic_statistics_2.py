@@ -47,8 +47,6 @@ for line in input_file:
 		sections_by_day[date_key] += 1
 
 	# sections by user
-	user_id_items = user_id.split('-')
-	user_id = user_id_items[-1]
 	if user_id not in sections_by_users:
 		sections_by_users[user_id] = True
 
