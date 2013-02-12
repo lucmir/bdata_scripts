@@ -155,8 +155,13 @@ def calc_sections_count():
 
             # hours_after_publishing
             # publish_date - creation_time
-            publish_timestamp = float(publish_date)
-            publish_date_dt_obj = datetime.datetime.utcfromtimestamp(publish_timestamp)
+            try:
+                publish_timestamp = float(publish_date)
+                publish_date_dt_obj = datetime.datetime.utcfromtimestamp(publish_timestamp)
+            except:
+                LOGGER.error( 'Error parsing publish_date in line: %s' % str(sections_count) ) 
+                continue
+
             tdelta = dt_obj - publish_date_dt_obj
             tdelta_in_hours = round(tdelta.total_seconds() / 3600.0)
             increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
