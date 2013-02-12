@@ -259,6 +259,21 @@ def write_distribution(dist, out_file):
     file.close()
 
 
+def write_distribution_for_date_as_key(dist, out_file):
+
+    file = open(out_file, "w")
+
+    count = 0
+    for m in range(1, 13):
+        for d in range(1, 32):
+            key = '%d/%d/2012' % (d, m)
+            if key in dist:
+                file.write(str(count) + '\t' + str(key) + '\t' + str(dist[key]) + '\n')
+                count += 1
+    
+    file.close()
+
+
 if __name__ == "__main__":
 
     LOGGER.info('Starting sections counting...')
@@ -283,7 +298,7 @@ if __name__ == "__main__":
 
     if 'sections_by_day' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_day...')
-        write_distribution(sections_by_day, DISTRIBUTIONS_OUT_DIR + 'sections_by_day.data')
+        write_distribution_for_date_as_key(sections_by_day, DISTRIBUTIONS_OUT_DIR + 'sections_by_day.data')
     
     if 'sections_by_users_dist' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_users_dist...')
