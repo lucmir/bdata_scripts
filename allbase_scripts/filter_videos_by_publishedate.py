@@ -165,7 +165,7 @@ if __name__ == "__main__":
     out_dir = DISTRIBUTIONS_OUT_DIR + 'sections_by_genre_and_hours_after_publishing/'
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    for genre in sections_by_genre.keys():
+    for genre in sections_by_genre_and_hours_after_publishing.keys():
         if genre in sections_by_genre_and_hours_after_publishing:
             write_distribution(sections_by_genre_and_hours_after_publishing[genre], out_dir + genre + '.data')
 
@@ -176,6 +176,6 @@ if __name__ == "__main__":
     out_dir = DISTRIBUTIONS_OUT_DIR + 'sections_by_genre_and_days_after_publishing/'
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    for genre in sections_by_genre.keys():
+    for genre in sections_by_genre_and_days_after_publishing.keys():
         if genre in sections_by_genre_and_days_after_publishing:
             write_distribution(sections_by_genre_and_days_after_publishing[genre], out_dir + genre + '.data')
