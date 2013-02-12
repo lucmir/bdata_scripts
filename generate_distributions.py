@@ -33,7 +33,7 @@ DISTRIBUTIONS_TO_GENERATE = [   \
                                 'sections_by_section_time',
                                 'sections_by_days_after_publishing',
                                 'sections_by_genre_and_hours_after_publishing',
-                                'sections_by_genre_and_section_time'
+                                'sections_by_genre_and_section_time',
                                 'sections_by_day_hour',
                                 'sections_by_genre_and_day_hour',
                                 'sections_by_retention',
