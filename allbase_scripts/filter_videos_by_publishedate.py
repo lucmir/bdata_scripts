@@ -79,11 +79,11 @@ def filter_videos_by_publishdate():
 
     for line in input_file:
 
-		try:
+        try:
         	(user_id, video_id, creation_time, last_update_time, genre, video_duration) = line.split()
-		except:
-			LOGGER.error( 'Error in line: %s' % str(sections_count) ) 
-			continue
+        except:
+        	LOGGER.error( 'Error in line: %s' % str(sections_count) ) 
+        	continue
 
         if video_id in video_info_map:
 
