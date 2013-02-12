@@ -87,6 +87,9 @@ def filter_videos_by_publishdate():
 
         if video_id in video_info_map:
 
+            timestamp = float(creation_time) / 1000.0
+            dt_obj = datetime.datetime.utcfromtimestamp(timestamp)
+
             client_id = video_info_map[video_id][0]
             publish_date = video_info_map[video_id][1]
 
@@ -161,4 +164,3 @@ if __name__ == "__main__":
     for genre in sections_by_genre.keys():
         if genre in sections_by_genre_and_days_after_publishing:
             write_distribution(sections_by_genre_and_days_after_publishing[genre], out_dir + genre + '.data')
-    
