@@ -34,7 +34,7 @@ for line in input_file:
         continue
 
 	if video_id not in videos_map:
-        if '\'' not in video_id or '\"' not in video_id:
+        if "'" not in video_id or '"' not in video_id:
             videos_map[video_id] = True
 
 input_file.close()
