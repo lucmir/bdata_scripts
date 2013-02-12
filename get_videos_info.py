@@ -22,9 +22,16 @@ videos_map = {}
 
 input_file = open(DATA_FILE, 'r')
 
+line_count = 0
+
 for line in input_file:
 
-	(user_id, video_id, creation_time, last_update_time, genre, video_duration) = line.split()
+    line_count += 1
+    try:
+        (user_id, video_id, creation_time, last_update_time, genre, video_duration) = line.split()
+    except:
+        print 'Error parsing line: ' + str(line_count)
+        continue
 
 	if video_id not in videos_map:
 		videos_map[video_id] = True
