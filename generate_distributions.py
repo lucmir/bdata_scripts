@@ -274,6 +274,36 @@ def write_distribution_for_date_as_key(dist, out_file):
     file.close()
 
 
+def write_genre_distribution(dist, out_file):
+    """
+    Write distribution to a file
+    """
+    
+    keys = {}
+    keys['GENDER_KEY_COMEDY'] = 'COMEDY'
+    keys['GENDER_KEY_ENTERTAINMENT'] = 'ENTERTAINMENT'
+    keys['GENDER_KEY_FILM'] = 'FILM'
+    keys['GENDER_KEY_MUSIC'] = 'MUSIC'
+    keys['GENDER_KEY_PEOPLE'] = 'PEOPLE'
+    keys['GENDER_KEY_PETS'] = 'PETS'
+    keys['GENDER_KEY_POLITICS'] = 'POLITICS'
+    keys['GENDER_KEY_SCIENCE'] = 'SCIENCE'
+    keys['GENDER_KEY_SPORTS'] = 'SPORTS'
+    keys['None'] = 'UNKNOW'
+
+    sorted_keys = sorted(keys.keys())
+
+    file = open(out_file, "w")
+
+    count = 0
+    for key in keys:
+        if key in dist:
+            file.write(str(count) + '\t' +  keys[key] + '\t' + str(dist[key]) + '\n')
+            count += 1
+    
+    file.close()
+
+
 if __name__ == "__main__":
 
     LOGGER.info('Starting sections counting...')
@@ -310,7 +340,7 @@ if __name__ == "__main__":
     
     if 'sections_by_genre' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_genre...')
-        write_distribution(sections_by_genre, DISTRIBUTIONS_OUT_DIR + 'sections_by_genre.data')
+        write_genre_distribution(sections_by_genre, DISTRIBUTIONS_OUT_DIR + 'sections_by_genre.data')
     
     if 'sections_by_client' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_client...')
