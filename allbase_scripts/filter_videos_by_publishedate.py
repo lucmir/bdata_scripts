@@ -96,24 +96,24 @@ def filter_videos_by_publishdate():
             tdelta = dt_obj - publish_date_dt_obj
             
             if tdelta.total_seconds() >= 0:
-            	
-            	# days hours publishing
-            	tdelta_in_hours = round(tdelta.total_seconds() / 3600.0)
-            	increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
+                
+                # days hours publishing
+                tdelta_in_hours = round(tdelta.total_seconds() / 3600.0)
+                increment_section_count(sections_by_hours_after_publishing, tdelta_in_hours)
 
-            	# sections by genre and hours after publishing
-	            if genre not in sections_by_genre_and_hours_after_publishing:
-	                sections_by_genre_and_hours_after_publishing[genre] = {}
-	            increment_section_count(sections_by_genre_and_hours_after_publishing[genre], tdelta_in_hours)
-          	
-            	# days after publishing
-            	tdelta_in_days = round(tdelta.total_seconds() / 86400.0 )
-            	increment_section_count(sections_by_days_after_publishing, tdelta_in_days)
+                # sections by genre and hours after publishing
+                if genre not in sections_by_genre_and_hours_after_publishing:
+                	sections_by_genre_and_hours_after_publishing[genre] = {}
+                increment_section_count(sections_by_genre_and_hours_after_publishing[genre], tdelta_in_hours)
 
-            	# sections by genre and days after publishing
-	            if genre not in sections_by_genre_and_days_after_publishing:
-	                sections_by_genre_and_days_after_publishing[genre] = {}
-	            increment_section_count(sections_by_genre_and_days_after_publishing[genre], tdelta_in_days)
+                # days after publishing
+                tdelta_in_days = round(tdelta.total_seconds() / 86400.0 )
+                increment_section_count(sections_by_days_after_publishing, tdelta_in_days)
+
+                # sections by genre and days after publishing
+                if genre not in sections_by_genre_and_days_after_publishing:
+                	sections_by_genre_and_days_after_publishing[genre] = {}
+                increment_section_count(sections_by_genre_and_days_after_publishing[genre], tdelta_in_days)
 
 	    # total sections
         sections_count += 1
@@ -123,7 +123,7 @@ def filter_videos_by_publishdate():
     input_file.close()
 
     return	sections_by_hours_after_publishing, sections_by_genre_and_hours_after_publishing, \
-    		sections_by_days_after_publishing, sections_by_genre_and_days_after_publishing
+    sections_by_days_after_publishing, sections_by_genre_and_days_after_publishing
 
 
 if __name__ == "__main__":
@@ -161,3 +161,4 @@ if __name__ == "__main__":
     for genre in sections_by_genre.keys():
         if genre in sections_by_genre_and_days_after_publishing:
             write_distribution(sections_by_genre_and_days_after_publishing[genre], out_dir + genre + '.data')
+    
