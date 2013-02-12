@@ -185,15 +185,18 @@ def calc_sections_count():
 
             # retention
             if video_duration is not None and video_duration != 'None':
-                retention = (tdelta.total_seconds() * 1000.0) / int(video_duration)
-                retention = retention if retention <= 1.0 else 1.0
-                retention = round(retention, 1)
-                increment_section_count(sections_by_retention, retention)
+                try:
+                    retention = (tdelta.total_seconds() * 1000.0) / int(video_duration)
+                    retention = retention if retention <= 1.0 else 1.0
+                    retention = round(retention, 1)
+                    increment_section_count(sections_by_retention, retention)
 
-                # sections by genre and retention
-                if genre not in sections_by_genre_and_retention:
-                    sections_by_genre_and_retention[genre] = {}
-                    increment_section_count(sections_by_genre_and_retention[genre], retention)
+                    # sections by genre and retention
+                    if genre not in sections_by_genre_and_retention:
+                        sections_by_genre_and_retention[genre] = {}
+                        increment_section_count(sections_by_genre_and_retention[genre], retention)
+                except:
+                    LOGGER.error( 'Error while calculating retention: %s' % str(sections_count) )
 
         else:
             increment_section_count(sections_by_client, 'UNKNOW')
