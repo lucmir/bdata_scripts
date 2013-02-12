@@ -129,6 +129,21 @@ def filter_videos_by_publishdate():
     sections_by_days_after_publishing, sections_by_genre_and_days_after_publishing
 
 
+def write_distribution(dist, out_file):
+    """
+    Write distribution to a file
+    """
+    
+    keys = sorted(dist.keys())
+
+    file = open(out_file, "w")
+
+    for key in keys:
+        file.write(str(key) + '\t' + str(dist[key]) + '\n')
+    
+    file.close()
+
+
 if __name__ == "__main__":
 
     LOGGER.info('Starting sections counting...')
