@@ -119,7 +119,11 @@ def calc_sections_count():
 
     for line in input_file:
 
-        (user_id, video_id, creation_time, last_update_time, genre, video_duration) = line.split()
+        try:
+            (user_id, video_id, creation_time, last_update_time, genre, video_duration) = line.split()
+        except:
+            LOGGER.error( 'Error in line: %s' % str(sections_count) ) 
+            continue
         
         timestamp = float(creation_time) / 1000.0
         dt_obj = datetime.datetime.utcfromtimestamp(timestamp)
