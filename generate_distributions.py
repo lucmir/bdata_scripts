@@ -296,7 +296,7 @@ def write_genre_distribution(dist, out_file):
     file = open(out_file, "w")
 
     count = 0
-    for key in keys:
+    for key in sorted_keys:
         if key in dist:
             file.write(str(count) + '\t' +  keys[key] + '\t' + str(dist[key]) + '\n')
             count += 1
