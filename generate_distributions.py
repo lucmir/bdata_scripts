@@ -206,11 +206,10 @@ def calc_sections_count():
                         increment_section_count(sections_by_genre_and_retention[genre], retention)
                 except:
                     LOGGER.error( 'Error while calculating retention: %s' % str(sections_count) )
-
-        else:
-            increment_section_count(sections_by_client, 'UNKNOW')
-            increment_section_count(sections_by_hours_after_publishing, 'UNKNOW')
-            increment_section_count(sections_by_section_time, 'UNKNOW')
+        #else:
+        #    increment_section_count(sections_by_client, 'UNKNOW')
+        #    increment_section_count(sections_by_hours_after_publishing, 'UNKNOW')
+        #    increment_section_count(sections_by_section_time, 'UNKNOW')
 
         # total sections
         sections_count += 1
