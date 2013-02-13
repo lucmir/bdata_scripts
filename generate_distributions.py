@@ -244,7 +244,7 @@ def get_distribution_of_values(dict):
     return distribution
 
 
-def write_distribution(dist, out_file):
+def write_distribution(dist, out_file, omit_negative_values=False):
     """
     Write distribution to a file
     """
@@ -254,6 +254,8 @@ def write_distribution(dist, out_file):
     file = open(out_file, "w")
 
     for key in keys:
+        if omit_negative_values and float(key) < 0.0:
+            continue
         file.write(str(key) + '\t' + str(dist[key]) + '\n')
     
     file.close()
@@ -348,7 +350,8 @@ if __name__ == "__main__":
     
     if 'sections_by_hours_after_publishing' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_hours_after_publishing...')
-        write_distribution(sections_by_hours_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_hours_after_publishing.data')
+        write_distribution(sections_by_hours_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_hours_after_publishing.data',
+            omit_negative_values=True)
 
     if 'sections_by_section_time' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_section_time...')
@@ -356,7 +359,8 @@ if __name__ == "__main__":
 
     if 'sections_by_days_after_publishing' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_days_after_publishing...')
-        write_distribution(sections_by_days_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_days_after_publishing.data')
+        write_distribution(sections_by_days_after_publishing, DISTRIBUTIONS_OUT_DIR + 'sections_by_days_after_publishing.data',
+            omit_negative_values=True)
 
     if 'sections_by_genre_and_hours_after_publishing' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_genre_and_hours_after_publishing...')
@@ -365,7 +369,8 @@ if __name__ == "__main__":
             os.makedirs(out_dir)
         for genre in sections_by_genre.keys():
             if genre in sections_by_genre_and_hours_after_publishing:
-                write_distribution(sections_by_genre_and_hours_after_publishing[genre], out_dir + genre + '.data')
+                write_distribution(sections_by_genre_and_hours_after_publishing[genre], out_dir + genre + '.data', 
+                    omit_negative_values=True)
 
     if 'sections_by_genre_and_section_time' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_genre_and_section_time...')
