@@ -27,4 +27,8 @@ echo 'Running generate_distribution...'
 time python generate_distributions.py $BASE_DIR/outputs/bigdata_fields.data $BASE_DIR/outputs/video_info.data $BASE_DIR/outputs/distributions/
 echo;
 
+echo 'Generating graphics...'
+cd $BASE_DIR/results/gnuplot_scripts; ./generateGraphics.sh;
+echo;
+
 #TODO executar gnuplots
