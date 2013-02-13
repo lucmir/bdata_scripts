@@ -203,7 +203,7 @@ def calc_sections_count():
                     # sections by genre and retention
                     if genre not in sections_by_genre_and_retention:
                         sections_by_genre_and_retention[genre] = {}
-                        increment_section_count(sections_by_genre_and_retention[genre], retention)
+                    increment_section_count(sections_by_genre_and_retention[genre], retention)
                 except:
                     LOGGER.error( 'Error while calculating retention: %s' % str(sections_count) )
         #else:

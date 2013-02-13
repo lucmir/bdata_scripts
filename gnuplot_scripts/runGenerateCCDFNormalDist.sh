@@ -16,7 +16,8 @@ done;
 
 for i in sections_by_genre_and_retention \
 sections_by_genre_and_hours_after_publishing \
-sections_by_genre_and_section_time; do
+sections_by_genre_and_section_time \
+sections_by_genre_and_day_hour; do
 	for j in `ls -1 $BASE_DIR/$i`; do
 		./generateCCDFNormalDist.sh $BASE_DIR/$i/$j $BASE_DIR/$i/$j.normal 1
 		./generateCCDFNormalDist.sh $BASE_DIR/$i/$j $BASE_DIR/$i/$j.ccdf 2
