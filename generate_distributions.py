@@ -13,6 +13,7 @@
         - sections by genre and hour
         - sections by retention
         - sections by genre and retention
+        - videos by genre
 """
 
 import datetime
@@ -37,8 +38,22 @@ DISTRIBUTIONS_TO_GENERATE = [   \
                                 'sections_by_day_hour',
                                 'sections_by_genre_and_day_hour',
                                 'sections_by_retention',
-                                'sections_by_genre_and_retention'
+                                'sections_by_genre_and_retention',
+                                'videos_by_genre'
                             ]
+
+
+GENDER_MAP = {}
+GENDER_MAP['GENDER_KEY_COMEDY'] = 'COMEDY'
+GENDER_MAP['GENDER_KEY_ENTERTAINMENT'] = 'ENTERTAINMENT'
+GENDER_MAP['GENDER_KEY_FILM'] = 'FILM'
+GENDER_MAP['GENDER_KEY_MUSIC'] = 'MUSIC'
+GENDER_MAP['GENDER_KEY_PEOPLE'] = 'PEOPLE'
+GENDER_MAP['GENDER_KEY_PETS'] = 'PETS'
+GENDER_MAP['GENDER_KEY_POLITICS'] = 'POLITICS'
+GENDER_MAP['GENDER_KEY_SCIENCE'] = 'SCIENCE'
+GENDER_MAP['GENDER_KEY_SPORTS'] = 'SPORTS'
+GENDER_MAP['None'] = 'UNKNOW'
 
 
 def set_logger():
@@ -111,6 +126,7 @@ def calc_sections_count():
     sections_by_genre_and_day_hour = {}
     sections_by_retention = {}
     sections_by_genre_and_retention = {}
+    videos_by_genre = {}
 
     # read video info
     video_info_map = read_video_info()
@@ -143,7 +159,12 @@ def calc_sections_count():
         increment_section_count(sections_by_genre, genre)
 
         # sections by day hour
-        increment_section_count(sections_by_day_hour, dt_obj_local_time.hour)        
+        increment_section_count(sections_by_day_hour, dt_obj_local_time.hour)  
+
+        # videos by genre
+        if genre not in videos_by_genre:
+            videos_by_genre[genre] = {}
+        videos_by_genre[genre][video_id] = True      
 
         if video_id in video_info_map:
 
@@ -224,7 +245,7 @@ def calc_sections_count():
             sections_by_genre_and_hours_after_publishing, \
             sections_by_genre_and_section_time, sections_by_day_hour, \
             sections_by_genre_and_day_hour, sections_by_retention, \
-            sections_by_genre_and_retention
+            sections_by_genre_and_retention, videos_by_genre
 
 
 def get_distribution_of_values(dict):
@@ -279,27 +300,14 @@ def write_genre_distribution(dist, out_file):
     """
     Write distribution to a file
     """
-    
-    keys = {}
-    keys['GENDER_KEY_COMEDY'] = 'COMEDY'
-    keys['GENDER_KEY_ENTERTAINMENT'] = 'ENTERTAINMENT'
-    keys['GENDER_KEY_FILM'] = 'FILM'
-    keys['GENDER_KEY_MUSIC'] = 'MUSIC'
-    keys['GENDER_KEY_PEOPLE'] = 'PEOPLE'
-    keys['GENDER_KEY_PETS'] = 'PETS'
-    keys['GENDER_KEY_POLITICS'] = 'POLITICS'
-    keys['GENDER_KEY_SCIENCE'] = 'SCIENCE'
-    keys['GENDER_KEY_SPORTS'] = 'SPORTS'
-    keys['None'] = 'UNKNOW'
-
-    sorted_keys = sorted(keys.keys())
+    sorted_keys = sorted(GENDER_MAP.keys())
 
     file = open(out_file, "w")
 
     count = 0
     for key in sorted_keys:
         if key in dist:
-            file.write(str(count) + '\t' +  keys[key] + '\t' + str(dist[key]) + '\n')
+            file.write(str(count) + '\t' +  GENDER_MAP[key] + '\t' + str(dist[key]) + '\n')
             count += 1
     
     file.close()
@@ -315,7 +323,7 @@ if __name__ == "__main__":
         sections_by_genre_and_hours_after_publishing, \
         sections_by_genre_and_section_time, sections_by_day_hour, \
         sections_by_genre_and_day_hour, sections_by_retention, \
-        sections_by_genre_and_retention = calc_sections_count()
+        sections_by_genre_and_retention, videos_by_genre = calc_sections_count()
 
     LOGGER.info('Generating distributions...')
 
@@ -406,3 +414,13 @@ if __name__ == "__main__":
             if genre in sections_by_genre_and_retention:
                 write_distribution(sections_by_genre_and_retention[genre], out_dir + genre + '.data')
 
+    if 'videos_by_genre' in  DISTRIBUTIONS_TO_GENERATE:
+        LOGGER.info('videos_by_genre...')
+        sorted_keys = sorted(GENDER_MAP.keys())
+        file = open(DISTRIBUTIONS_OUT_DIR + 'videos_by_genre.data', "w")
+        count = 0
+        for key in sorted_keys:
+            if key in videos_by_genre:
+                file.write(str(count) + '\t' +  GENDER_MAP[key] + '\t' + str(len(videos_by_genre[key])) + '\n')
+                count += 1
+        file.close()
