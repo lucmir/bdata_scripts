@@ -28,13 +28,13 @@ DISTRIBUTIONS_TO_GENERATE = [   \
                                 'sections_by_day',
                                 'sections_by_users_dist',
                                 'sections_by_videos_dist',
-                                'sections_by_genre',
-                                'sections_by_client',
-                                'sections_by_hours_after_publishing',
-                                'sections_by_section_time',
-                                'sections_by_days_after_publishing',
-                                'sections_by_genre_and_hours_after_publishing',
-                                'sections_by_genre_and_section_time',
+#                                'sections_by_genre',
+#                                'sections_by_client',
+#                                'sections_by_hours_after_publishing',
+#                                'sections_by_section_time',
+#                                'sections_by_days_after_publishing',
+#                                'sections_by_genre_and_hours_after_publishing',
+#                                'sections_by_genre_and_section_time',
                                 'sections_by_day_hour',
                                 'sections_by_genre_and_day_hour',
                                 'sections_by_retention',
@@ -159,7 +159,9 @@ def calc_sections_count():
         increment_section_count(sections_by_genre, genre)
 
         # sections by day hour
-        increment_section_count(sections_by_day_hour, dt_obj_local_time.hour)  
+        key = "%s/%s/%s-%s" % (dt_obj_local_time.day, dt_obj_local_time.month, 
+            dt_obj_local_time.year, str(int(dt_obj_local_time.hour)+1))
+        increment_section_count(sections_by_day_hour, key)  
 
         # videos by genre
         if genre not in videos_by_genre:
@@ -211,7 +213,9 @@ def calc_sections_count():
             # sections by genre and day hour
             if genre not in sections_by_genre_and_day_hour:
                 sections_by_genre_and_day_hour[genre] = {}
-            increment_section_count(sections_by_genre_and_day_hour[genre], dt_obj_local_time.hour)
+            key = "%s/%s/%s-%s" % (dt_obj_local_time.day, dt_obj_local_time.month, 
+                dt_obj_local_time.year, str(int(dt_obj_local_time.hour)+1))
+            increment_section_count(sections_by_genre_and_day_hour[genre], key)
 
             # retention
             if video_duration is not None and video_duration != 'None':
@@ -281,17 +285,25 @@ def write_distribution(dist, out_file, omit_negative_values=False):
     file.close()
 
 
-def write_distribution_for_date_as_key(dist, out_file):
+def write_distribution_for_date_as_key(dist, out_file, by_hour=False):
 
     file = open(out_file, "w")
 
     count = 0
     for m in range(1, 13):
         for d in range(1, 32):
-            key = '%d/%d/2012' % (d, m)
-            if key in dist:
-                file.write(str(count) + '\t' + str(key) + '\t' + str(dist[key]) + '\n')
-                count += 1
+
+            if by_hour:
+                for h in range(1, 25):
+                    key = '%d/%d/2012-%d' % (d, m, h)
+                    if key in dist:
+                        file.write(str(count) + '\t' + str(key) + '\t' + str(dist[key]) + '\n')
+                        count += 1    
+            else:
+                key = '%d/%d/2012' % (d, m)
+                if key in dist:
+                    file.write(str(count) + '\t' + str(key) + '\t' + str(dist[key]) + '\n')
+                    count += 1
     
     file.close()
 
@@ -390,7 +402,8 @@ if __name__ == "__main__":
 
     if 'sections_by_day_hour' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_day_hour...')
-        write_distribution(sections_by_day_hour, DISTRIBUTIONS_OUT_DIR + 'sections_by_day_hour.data')
+        write_distribution_for_date_as_key(sections_by_day_hour, 
+            DISTRIBUTIONS_OUT_DIR + 'sections_by_day_hour.data', by_hour=True)
 
     if 'sections_by_genre_and_day_hour' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_genre_and_day_hour...')
@@ -399,7 +412,8 @@ if __name__ == "__main__":
             os.makedirs(out_dir)
         for genre in sections_by_genre.keys():
             if genre in sections_by_genre_and_day_hour:
-                write_distribution(sections_by_genre_and_day_hour[genre], out_dir + genre + '.data')
+                write_distribution_for_date_as_key(sections_by_genre_and_day_hour[genre], 
+                    out_dir + genre + '.data', by_hour=True)
 
     if 'sections_by_retention' in DISTRIBUTIONS_TO_GENERATE:
         LOGGER.info('sections_by_retention...')
